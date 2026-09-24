@@ -43,31 +43,27 @@ namespace tpfinal
             if (arbol == null) return resultado;
 
             Cola<ArbolGeneral<ItemCat>> cola = new Cola<ArbolGeneral<ItemCat>>(); //Creamos la cola 
-            cola.encolar(arbol); //Encolamos la raíz
+            cola.encolar(arbol); //Agregamos la raíz a la cola
 
             while (!cola.esVacia())//Mientras la cola no esté vacía, recorremos cada nivel
             {
-                int cantidadEnNivel = cola.cantidadElementos();//Contamos cuántos nodos hay formados EXACTAMENTE en este nivel
+                int cantidadEnNivel = cola.cantidadElementos();//Contamos cuántos nodos hay en este nivel
                 List<string> elementosNivel = new List<string>();
 
-                // 3. Procesamos a todos los nodos de este mismo piso
-                for (int i = 0; i < cantidadEnNivel; i++)
+                for (int i = 0; i < cantidadEnNivel; i++)//Procesamos todos los nodos de este nivel
                 {
-                    var nodoActual = cola.desencolar(); // Sacamos al primero de la fila
-                    elementosNivel.Add(nodoActual.getDatoRaiz().Nombre); // Anotamos su nombre
+                    var nodoActual = cola.desencolar(); //Sacamos al primero de la cola
+                    elementosNivel.Add(nodoActual.getDatoRaiz().Nombre); //Guardamos el nombre del nodo actual
 
-                    // 4. A sus hijos los mandamos al fondo de la fila para el siguiente piso
-                    foreach (var hijo in nodoActual.getHijos())
+                    foreach (var hijo in nodoActual.getHijos())//Encolamos cada hijo del nodo actual para el siguiente nivel
                     {
                         cola.encolar(hijo);
                     }
                 }
-
-                // 5. Terminamos este piso, guardamos su listita en el resultado general
-                resultado.Add(elementosNivel);
+                
+                resultado.Add(elementosNivel);//Una vez recorrido el nivel entero, guardamos la lista de nodos en el resultado general
             }
 
-            
             return resultado;
         }
 
