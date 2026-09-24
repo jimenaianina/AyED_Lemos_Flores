@@ -50,25 +50,21 @@ namespace tpfinal
         public List<ItemCat> Todos(ArbolGeneral<ItemCat> arbol)
         {
             List<ItemCat> listaProductos = new List<ItemCat>();
-    
-            // Si el árbol viene vacío, devolvemos la lista vacía
-            if (arbol == null) return listaProductos;
 
-            //Revisamos el nodo actual (la raíz); si es un producto, lo guardamos en la lista
-            if (arbol.getDatoRaiz().Tipo == TipoElemento.Producto)
+            if (arbol == null) return listaProductos; // Si el árbol viene vacío, devolvemos la lista vacía
+
+           
+            if (arbol.getDatoRaiz().Tipo == TipoElemento.Producto) //Revisamos la raíz; si es un producto, lo guardamos en la lista
             {
                 listaProductos.Add(arbol.getDatoRaiz());
             }
 
-            //Recorremos en profundidad cada uno de los hijos
-            foreach (var hijo in arbol.getHijos())
+            foreach (var hijo in arbol.getHijos()) //Recorremos en profundidad cada uno de los hijos. Llamamos recursivamente al método
             {
-                // Llamamos recursivamente al método
                 listaProductos.AddRange(Todos(hijo)); //usamos AddRange para incluir en la lista todos los productos hijos 
             }
 
-            //Devolvemos la lista completa con todos los productos encontrados
-            return listaProductos;
+            return listaProductos;  //Devolvemos la lista completa con todos los productos encontrados
         }
 
         public void Agregar(ArbolGeneral<ItemCat> arbol, ItemCat dato, string rutaAlPadre)
