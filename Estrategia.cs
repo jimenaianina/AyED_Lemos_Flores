@@ -51,25 +51,23 @@ namespace tpfinal
         {
             List<ItemCat> listaProductos = new List<ItemCat>();
     
-            // Si el árbol o nodo viene vacío, devolvemos la lista vacía
+            // Si el árbol viene vacío, devolvemos la lista vacía
             if (arbol == null) return listaProductos;
 
-            //Revisamos el nodo actual (la raíz)
-            // si es un producto, lo guardamos en nuestra lista
+            //Revisamos el nodo actual (la raíz); si es un producto, lo guardamos en la lista
             if (arbol.getDatoRaiz().Tipo == TipoElemento.Producto)
             {
                 listaProductos.Add(arbol.getDatoRaiz());
             }
 
-            // 2. Recorremos cada uno de los hijos (las ramas o subcategorías)
+            //Recorremos en profundidad cada uno de los hijos
             foreach (var hijo in arbol.getHijos())
             {
-                // Llamamos recursivamente al método para que haga el mismo trabajo en cada hijo
-                // y sumamos los resultados que nos devuelve
-                listaProductos.AddRange(Todos(hijo));
+                // Llamamos recursivamente al método
+                listaProductos.AddRange(Todos(hijo)); //usamos AddRange para incluir en la lista todos los productos hijos 
             }
 
-            // 3. Devolvemos la lista completa con todos los productos encontrados
+            //Devolvemos la lista completa con todos los productos encontrados
             return listaProductos;
         }
 
