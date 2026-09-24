@@ -82,8 +82,7 @@ namespace tpfinal
         public List<ItemCat> Buscar(ArbolGeneral<ItemCat> arbol, string elementoABuscar)
 		{
             /* Retorna una List<ItemCat> con todos los elementos del árbol cuyo nombre contenga, de forma 
-            total o parcial, la cadena de texto recibida como parámetro.
-            */
+            total o parcial, la cadena de texto recibida como parámetro.*/
 			return [];
 		}
             
