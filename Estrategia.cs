@@ -59,9 +59,9 @@ namespace tpfinal
                 listaProductos.Add(arbol.getDatoRaiz());
             }
 
-            foreach (var hijo in arbol.getHijos()) //Recorremos en profundidad cada uno de los hijos. Llamamos recursivamente al método
+            foreach (var hijo in arbol.getHijos()) //Recorremos en profundidad cada uno de los hijos.
             {
-                listaProductos.AddRange(Todos(hijo)); //usamos AddRange para incluir en la lista todos los productos hijos 
+                listaProductos.AddRange(Todos(hijo)); //Llamamos recursivamente al método y usamos AddRange para incluir en la lista todos los productos hijos 
             }
 
             return listaProductos;  //Devolvemos la lista completa con todos los productos encontrados
