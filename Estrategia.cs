@@ -26,13 +26,52 @@ namespace tpfinal
 
         public List<string> GetURLsSEO(ArbolGeneral<ItemCat> arbol)
 		{
-            /*Retorna una List<string> que contiene todas las URLs amigables (SEO) generadas 
-            a partir del árbol. Cada URL se construye recorriendo el camino desde la raíz hasta 
-            cada hoja, concatenando el nombre de cada categoría. Por ejemplo:
-            URL generada: tienda.com/electronica/computadoras/laptops/gaming
-            */
-			return ["Implementar"];
+			List<string> listaUrls = new List<string>();
+
+            if (arbol == null)
+            {
+                return listaUrls;
+            }
+
+            // Prefijo base del dominio
+            string dominioBase = "tienda.com";
+
+            // Recorrido DFS acumulando las partes del camino
+            DfsUrls(arbol, dominioBase, listaUrls);
+
+            return listaUrls;
 		}
+
+        private void DfsUrls(ArbolGeneral<ItemCat> nodo, string rutaActual, List<string> listaUrls){
+            if (nodo == null) return;
+
+            ItemCat dato = nodo.getDatoRaiz();
+            string segmento = "";
+
+            if (dato != null && !string.IsNullOrWhiteSpace(dato.Nombre))
+            {
+                // Limpiamos el texto a formato slug (minúsculas y reemplazo de espacios)
+                segmento = dato.Nombre.Trim().ToLower().Replace(" ", "-");
+            }
+
+            // Armamos la URL acumulada hasta el nodo actual
+            string nuevaRuta = string.IsNullOrEmpty(segmento) 
+                ? rutaActual 
+                : $"{rutaActual}/{segmento}";
+
+            // Si es un nodo hoja, alcanzamos el final del camino y guardamos la URL
+            if (nodo.esHoja())
+            {
+                listaUrls.Add(nuevaRuta);
+                return;
+            }
+
+            // Si no es hoja, continuamos explorando sus subárboles hijos
+            foreach (var hijo in nodo.getHijos())
+            {
+                DfsUrls(hijo, nuevaRuta, listaUrls);
+            }
+        }
         
 
               
@@ -88,20 +127,89 @@ namespace tpfinal
             return listaProductos;  //Devolvemos la lista completa con todos los productos encontrados
         }
 
-        public void Agregar(ArbolGeneral<ItemCat> arbol, ItemCat dato, string rutaAlPadre)
-		{
-            /*Inserta un nuevo elemento en el árbol general. Tanto el árbol como el dato a 
-            incorporar y la ruta correspondiente al nodo padre son recibidos como parámetros. Si la ruta
-            indicada no existe, el método deberá crear automáticamente los nodos necesarios y, 
-            posteriormente, insertar el nuevo elemento en dicha ubicación.*/
+        public void Agregar(ArbolGeneral<ItemCat> arbol, ItemCat dato, string rutaAlPadre){
+            if (rutaAlPadre == null || rutaAlPadre.Trim().Length == 0){
+                throw new ArgumentException("La ruta al nodo padre no puede estar vacía.", nameof(rutaAlPadre));
+            }
+
+            string[] niveles = rutaAlPadre.Split(new char[] { '/', '>' }, StringSplitOptions.RemoveEmptyEntries);
+
+            ArbolGeneral<ItemCat> actual = arbol;
+
+            int inicio = 0;
+            if (niveles.Length > 0 && actual.getDatoRaiz() != null &&
+                actual.getDatoRaiz().Nombre.Equals(niveles[0].Trim(), StringComparison.OrdinalIgnoreCase))
+            {
+                inicio = 1;
+            }
+
+            for (int i = inicio; i < niveles.Length; i++){
+                string nombreNivel = niveles[i].Trim();
+                ArbolGeneral<ItemCat> hijoEncontrado = null;
+
+            
+                foreach (var hijo in actual.getHijos())
+                {
+                    if (hijo.getDatoRaiz() != null &&
+                        hijo.getDatoRaiz().Nombre.Equals(nombreNivel, StringComparison.OrdinalIgnoreCase))
+                    {
+                        hijoEncontrado = hijo;
+                        break;
+                    }
+                }
+
+                if (hijoEncontrado == null)
+                {
+                    ItemCat nuevaCategoria = new ItemCat(nombreNivel, TipoElemento.Categoria);
+                    hijoEncontrado = new ArbolGeneral<ItemCat>(nuevaCategoria);
+                    actual.agregarHijo(hijoEncontrado);
+                }
+
+                actual = hijoEncontrado;
+            }
+
+            actual.agregarHijo(new ArbolGeneral<ItemCat>(dato));
         }
 
-        public List<ItemCat> Buscar(ArbolGeneral<ItemCat> arbol, string elementoABuscar)
-		{
-            /* Retorna una List<ItemCat> con todos los elementos del árbol cuyo nombre contenga, de forma 
-            total o parcial, la cadena de texto recibida como parámetro.*/
-			return [];
-		}
+        public List<ItemCat> Buscar(ArbolGeneral<ItemCat> arbol, string elementoABuscar){
+			List<ItemCat> resultados = new List<ItemCat>();
+
+            // Validación de precondiciones
+            if (arbol == null || string.IsNullOrWhiteSpace(elementoABuscar))
+            {
+                return resultados;
+            }
+
+            // Normalizamos el término de búsqueda una sola vez
+            string texto = elementoABuscar.Trim();
+
+            // Ejecutamos el recorrido en profundidad (DFS)
+            DfsBuscar(arbol, texto, resultados);
+
+            return resultados;
+        }
+
+        private void DfsBuscar(ArbolGeneral<ItemCat> nodo, string texto, List<ItemCat> resultados)
+        {
+            if (nodo == null) return;
+
+            ItemCat actual = nodo.getDatoRaiz();
+
+            // 1. Visitar nodo actual: verificamos si coincide total o parcialmente
+            if (actual != null && !string.IsNullOrEmpty(actual.Nombre))
+            {
+                if (actual.Nombre.Contains(texto, StringComparison.OrdinalIgnoreCase))
+                {
+                    resultados.Add(actual);
+                }
+            }
+
+            // 2. Profundizar: llamada recursiva hacia los hijos (DFS)
+            foreach (var hijo in nodo.getHijos())
+            {
+                DfsBuscar(hijo, texto, resultados);
+            }
+        }
             
     }
 }
