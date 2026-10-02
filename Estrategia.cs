@@ -11,7 +11,7 @@ namespace tpfinal
 	public class Estrategia
 	{
 		
-		public string GetUrlSeoPorId(ArbolGeneral arbol, int id)
+		public string GetUrlSeoPorId(ArbolGeneral<ItemCat> arbol, int id)
         {
             if (arbol == null)
             {
@@ -28,7 +28,7 @@ namespace tpfinal
 
             return string.Empty;
         }
-        private string? DfsUrlPorId(ArbolGeneral nodo, string rutaActual, int id)
+        private string? DfsUrlPorId(ArbolGeneral<ItemCat> nodo, string rutaActual, int id)
         {
             if (nodo == null)
             {
