@@ -42,7 +42,7 @@ namespace tpfinal
             }
 
             // Necesario para que el método nivel() funcione correctamente
-            public override bool Equals(object obj)
+            public override bool Equals(object? obj)
             {
                 if (obj is ItemCat otro) return this.Nombre == otro.Nombre;
                 return false;

@@ -1,0 +1,9 @@
+C:\Users\jimei\Desktop\UNAJ\2do año\2do cuatri\Algoritmos y estructuras de datos\Trabajo Práctico Final\obj\Debug\net8.0\ApiCatalogo.csproj.AssemblyReference.cache
+C:\Users\jimei\Desktop\UNAJ\2do año\2do cuatri\Algoritmos y estructuras de datos\Trabajo Práctico Final\obj\Debug\net8.0\rpswa.dswa.cache.json
+C:\Users\jimei\Desktop\UNAJ\2do año\2do cuatri\Algoritmos y estructuras de datos\Trabajo Práctico Final\obj\Debug\net8.0\ApiCatalogo.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\jimei\Desktop\UNAJ\2do año\2do cuatri\Algoritmos y estructuras de datos\Trabajo Práctico Final\obj\Debug\net8.0\ApiCatalogo.AssemblyInfoInputs.cache
+C:\Users\jimei\Desktop\UNAJ\2do año\2do cuatri\Algoritmos y estructuras de datos\Trabajo Práctico Final\obj\Debug\net8.0\ApiCatalogo.AssemblyInfo.cs
+C:\Users\jimei\Desktop\UNAJ\2do año\2do cuatri\Algoritmos y estructuras de datos\Trabajo Práctico Final\obj\Debug\net8.0\ApiCatalogo.csproj.CoreCompileInputs.cache
+C:\Users\jimei\Desktop\UNAJ\2do año\2do cuatri\Algoritmos y estructuras de datos\Trabajo Práctico Final\obj\Debug\net8.0\ApiCatalogo.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\jimei\Desktop\UNAJ\2do año\2do cuatri\Algoritmos y estructuras de datos\Trabajo Práctico Final\obj\Debug\net8.0\ApiCatalogo.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\jimei\Desktop\UNAJ\2do año\2do cuatri\Algoritmos y estructuras de datos\Trabajo Práctico Final\obj\Debug\net8.0\ApiCatalogo.sourcelink.json

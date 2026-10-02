@@ -11,18 +11,58 @@ namespace tpfinal
 	public class Estrategia
 	{
 		
-		public string GetUrlSeoPorId(ArbolGeneral<ItemCat> arbol, int id)
+		public string GetUrlSeoPorId(ArbolGeneral arbol, int id)
         {
-            /*
-            Retorna una cadena de texto con la URL amigable (SEO) correspondiente al elemento 
-            almacenado en el árbol cuyo identificador coincide con el valor recibido como 
-            parámetro.
+            if (arbol == null)
+            {
+                return string.Empty;
+            }
 
-            */
-            
-            return "Implementar";
+            string dominioBase = "tienda.com";
+            string? resultado = DfsUrlPorId(arbol, dominioBase, id);
+
+            if (resultado != null)
+            {
+                return resultado;
+            }
+
+            return string.Empty;
         }
-        
+        private string? DfsUrlPorId(ArbolGeneral nodo, string rutaActual, int id)
+        {
+            if (nodo == null)
+            {
+                return null;
+            }
+
+            ItemCat dato = nodo.getDatoRaiz();
+            string segmento = string.Empty;
+
+            if (dato != null && !string.IsNullOrWhiteSpace(dato.Nombre))
+            {
+                segmento = dato.Nombre.Trim().ToLower().Replace(" ", "-");
+            }
+
+            string nuevaRuta = string.IsNullOrEmpty(segmento) 
+                ? rutaActual 
+                : rutaActual + "/" + segmento;
+
+            if (dato != null && dato.Id == id)
+            {
+                return nuevaRuta;
+            }
+
+            foreach (var hijo in nodo.getHijos())
+            {
+                string? resultadoHijo = DfsUrlPorId(hijo, nuevaRuta, id);
+                if (resultadoHijo != null)
+                {
+                    return resultadoHijo;
+                }
+            }
+
+            return null;
+        }
 
         public List<string> GetURLsSEO(ArbolGeneral<ItemCat> arbol)
 		{
@@ -73,9 +113,6 @@ namespace tpfinal
             }
         }
         
-
-              
-
         public List<List<string>> ConsultaNiveles(ArbolGeneral<ItemCat> arbol)
 		{
             List<List<string>> resultado = new List<List<string>>();
