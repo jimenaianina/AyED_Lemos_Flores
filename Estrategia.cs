@@ -205,7 +205,24 @@ namespace tpfinal
                 actual = hijoEncontrado;
             }
 
-            actual.agregarHijo(new ArbolGeneral<ItemCat>(dato));
+            /* Verifica si el dato ya existe dentro del padre encontrado
+             Lo que venia sucediendo antes era que verificaba su ruta "Celulares/Iphone/Elem" lo que hacia la
+             verificacion de la ruta anterior a Elem, por lo cual si yo ejecutase 2 veces "Celulares/Iphone/Elem"
+             la verificacion de la ruta sucede de forma excelente, pero el Elem se duplica dentro de Iphone.*/
+            bool yaExisteDato = false;
+            foreach (var hijo in actual.getHijos()){
+                if (hijo.getDatoRaiz() != null &&
+                    hijo.getDatoRaiz().Nombre.Equals(dato.Nombre, StringComparison.OrdinalIgnoreCase))
+                {
+                    yaExisteDato = true;
+                    break;
+                }
+            }
+
+            if (!yaExisteDato)
+            {
+                actual.agregarHijo(new ArbolGeneral<ItemCat>(dato));
+            }
         }
 
         public List<ItemCat> Buscar(ArbolGeneral<ItemCat> arbol, string elementoABuscar){
@@ -226,6 +243,10 @@ namespace tpfinal
             return resultados;
         }
 
+        /*Un arbol,en este caso general, es un grafo aciclico dirigido lo cual el recorrido PreOrden
+        lo hace de igual manera, primero la raiz y luegos sus descendientes, lo unico que cambia de usar un DFS
+        en un grafo es que no utlizamos un array Visitados, que en este caso no nos sirve usarlo debido a que 
+        ya la estructura del arbol te asegura que no va a ver un ciclo y que termino siendo un recorrido infinito*/
         private void DfsBuscar(ArbolGeneral<ItemCat> nodo, string texto, List<ItemCat> resultados)
         {
             if (nodo == null) return;

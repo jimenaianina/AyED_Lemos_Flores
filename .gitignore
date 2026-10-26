@@ -1,0 +1,13 @@
+# Compilación y temporales de .NET
+bin/
+obj/
+
+# Archivos de configuración de Visual Studio / VS Code
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Paquetes y caches
+*.lock.json
+project.lock.json
