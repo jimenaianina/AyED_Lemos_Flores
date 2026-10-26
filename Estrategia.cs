@@ -28,40 +28,41 @@ namespace tpfinal
 
             return string.Empty;
         }
-        private string? DfsUrlPorId(ArbolGeneral<ItemCat> nodo, string rutaActual, int id)
-        {
-            if (nodo == null)
-            {
+        private string? DfsUrlPorId(ArbolGeneral<ItemCat> nodo, string rutaActual, int id){
+            if (nodo == null){
                 return null;
             }
 
             ItemCat dato = nodo.getDatoRaiz();
             string segmento = string.Empty;
 
-            if (dato != null && !string.IsNullOrWhiteSpace(dato.Nombre))
-            {
+            if (dato != null && !string.IsNullOrWhiteSpace(dato.Nombre)){
                 segmento = dato.Nombre.Trim().ToLower().Replace(" ", "-");
             }
 
-            string nuevaRuta = string.IsNullOrEmpty(segmento) 
-                ? rutaActual 
-                : rutaActual + "/" + segmento;
+            // Evitamos duplicar si la raíz ya tiene de nombre "tienda" o "tienda.com"
+            string nuevaRuta;
+            if (rutaActual == "tienda.com" && (segmento.Contains("tienda") || string.IsNullOrEmpty(segmento))){
+                nuevaRuta = rutaActual;
+            }else{
+                nuevaRuta = string.IsNullOrEmpty(segmento) ? rutaActual : $"{rutaActual}/{segmento}";
+            }
 
-            if (dato != null && dato.Id == id)
-            {
+            // Si encontramos el elemento por su Id, retornamos inmediatamente la URL
+            if (dato != null && dato.Id == id){
                 return nuevaRuta;
             }
 
-            foreach (var hijo in nodo.getHijos())
-            {
+            // Búsqueda en profundidad en los subárboles hijos
+            foreach (var hijo in nodo.getHijos()){
                 string? resultadoHijo = DfsUrlPorId(hijo, nuevaRuta, id);
                 if (resultadoHijo != null)
                 {
-                    return resultadoHijo;
+                    return resultadoHijo; // Propaga el resultado hacia arriba y corta la búsqueda
                 }
             }
 
-            return null;
+            return null; // No se encontró en esta rama
         }
 
         public List<string> GetURLsSEO(ArbolGeneral<ItemCat> arbol)
@@ -95,18 +96,25 @@ namespace tpfinal
             }
 
             // Armamos la URL acumulada hasta el nodo actual
-            string nuevaRuta = string.IsNullOrEmpty(segmento) 
-                ? rutaActual 
-                : $"{rutaActual}/{segmento}";
+            string nuevaRuta;
+            // Si estamos en la raíz y su nombre ya es la tienda o el dominio, evitamos duplicarlo
+            if (rutaActual == "tienda.com" && (segmento.Contains("tienda") || string.IsNullOrEmpty(segmento)))
+            {
+                nuevaRuta = rutaActual;
+            }
+            else
+            {
+                nuevaRuta = string.IsNullOrEmpty(segmento) ? rutaActual : $"{rutaActual}/{segmento}";
+            }
 
-            // Si es un nodo hoja, alcanzamos el final del camino y guardamos la URL
+            // Condición de corte (nodo hoja): alcanzamos el final del camino y guardamos la URL completa
             if (nodo.esHoja())
             {
                 listaUrls.Add(nuevaRuta);
                 return;
             }
 
-            // Si no es hoja, continuamos explorando sus subárboles hijos
+            // Si no es hoja, continuamos explorando recursivamente sus subárboles hijos
             foreach (var hijo in nodo.getHijos())
             {
                 DfsUrls(hijo, nuevaRuta, listaUrls);
